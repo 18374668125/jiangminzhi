@@ -13,8 +13,9 @@
 			width: 350px;
 			height: 350px;
 			position: relative;
-			left: 50px;
-			top: 50px;
+			/*left: 50px;
+			top: 50px;*/
+			float: left;
 		}
 		#mask{
 			width: 150px;
@@ -27,7 +28,18 @@
 			display: none;
 		}
 		#maxDiv{
-			display: none;
+			/*display: none;*/
+			float: left;
+			width: 500px;
+			height: 500px;
+			border: 1px solid blue;
+			overflow: hidden;
+			position: relative;
+		}
+		#maxDiv>img{
+			position: absolute;
+			left:0;
+			top: 0;
 		}
 	</style>
 </head>
@@ -45,7 +57,10 @@
 <script type="text/javascript">
 	// 获取元素
 	var minDiv = document.querySelector("#minDiv");
+	var maxDiv = document.querySelector("#maxDiv");
 	var mask = document.querySelector("#mask");
+
+	var maxImg = document.querySelector("#maxDiv>img");
 
 	// 移入事件
 	minDiv.onmouseenter = function(e){
@@ -89,6 +104,25 @@
 			// 改变mask的位置
 			mask.style.left = mouseMoveX + 'px';
 			mask.style.top = mouseMoveY + 'px';
+
+			//---------------------------
+			// 1. 保证左右两边图的比例一致
+			// 计算比例
+			var scaleW = mask.offsetWidth / minDiv.offsetWidth;
+			var w = maxDiv.offsetWidth / scaleW;
+
+			var scaleH = mask.offsetHeight / minDiv.offsetHeight;
+			var h = maxDiv.offsetHeight / scaleH;
+
+			// 设置大图的宽度
+			maxImg.style.width = w + "px";
+			maxImg.style.height = h + "px";
+
+			// 2. 改变大图的位置
+			// 注意：计算好放大的比例
+			maxImg.style.left = -mouseMoveX * (maxDiv.offsetWidth / mask.offsetWidth) + "px";
+			maxImg.style.top = -mouseMoveY * (maxDiv.offsetHeight / mask.offsetHeight) + "px";
+			//---------------------------
 		}
 	}
 
