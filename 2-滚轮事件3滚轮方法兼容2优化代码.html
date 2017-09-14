@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		div{
+			width: 100px;
+			height: 100px;
+			background: red;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<div></div>
+</body>
+<script type="text/javascript">
+	var div = document.getElementsByTagName('div')[0];
+
+	// 每一次增加多少
+	var v = 10;
+
+	// 封装兼容滚轮事件方法
+	// 同时兼容火狐以及非火狐浏览器
+	// 参考列表：ele元素, upFn滚轮向上执行的函数
+	// downFn滚轮向下执行的函数
+	function mouseWheel(ele,upFn,downFn){
+		// 1. 直接使用onmousewheel绑定
+		ele.onmousewheel = fn;
+		// 2. 使用DOMMouseScroll
+		// 判断浏览器是否支持addEventListener
+		if(window.addEventListener){
+			ele.addEventListener("DOMMouseScroll",fn , false);
+		}
+
+		function fn(e){
+			var e  = e || window.event;
+			// 判断滚轮方向（向上）
+			if(e.wheelDelta > 0 || e.detail < 0){
+				upFn();
+			}else{
+				downFn();
+			}
+		}
+	}
+	mouseWheel(document, function(){
+		console.log("up1111111");
+	},function(){
+		console.log("down22222");
+	});
+
+</script>
+</html>
